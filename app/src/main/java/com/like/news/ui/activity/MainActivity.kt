@@ -2,6 +2,10 @@ package com.like.news.ui.activity
 
 import android.os.Bundle
 import android.support.v4.app.FragmentTransaction
+import android.util.Log
+import cn.sharesdk.framework.Platform
+import cn.sharesdk.framework.ShareSDK
+import cn.sharesdk.sina.weibo.SinaWeibo
 import com.flyco.tablayout.listener.CustomTabEntity
 import com.flyco.tablayout.listener.OnTabSelectListener
 import com.like.news.R
@@ -34,10 +38,19 @@ class MainActivity : BaseActivity() {
        return R.layout.activity_main
     }
 
-    override fun init(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            mIndex = savedInstanceState.getInt("currTabIndex")
+        }
+        super.onCreate(savedInstanceState)
         initTab()
         tab_layout.currentTab = mIndex
         switchFragment(mIndex)
+    }
+
+    override fun init(savedInstanceState: Bundle?) {
+        val weibo : Platform = ShareSDK.getPlatform(SinaWeibo.NAME)
+        Log.d("微博授权",weibo!!.db.exportData().toString())
     }
 
     /**
@@ -93,5 +106,15 @@ class MainActivity : BaseActivity() {
     private fun hideFragments(transaction: FragmentTransaction) {
         mHomeFragment?.let { transaction.hide(it) }
         mMineFragment?.let { transaction.hide(it) }
+    }
+
+    /**
+     * 记录fragment的位置,防止崩溃 activity被系统回收时，fragment错乱
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (tab_layout != null){
+            outState.putInt("currTabIndex",mIndex)
+        }
     }
 }

@@ -10,7 +10,7 @@ package com.like.news.mvp.model.bean
 
  */
 
-data class NewsBean(
+data class PublicNews(
     val created_at: String,
     val id: Long,
     val idstr: String,

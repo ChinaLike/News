@@ -1,9 +1,13 @@
 package com.like.news.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import com.like.news.R
 import com.like.news.base.BaseFragment
+import com.like.news.mvp.contract.HomeContract
+import com.like.news.mvp.model.bean.PublicNews
+import com.like.news.mvp.presenter.HomePresenter
 
 /**
 
@@ -14,7 +18,9 @@ import com.like.news.base.BaseFragment
  * 描述：主页
 
  */
-class HomeFragment : BaseFragment(){
+class HomeFragment : BaseFragment() , HomeContract.View{
+
+    private val mPresenter by lazy { HomePresenter() }
 
     companion object {
         fun getInstance(title : String) : HomeFragment{
@@ -31,7 +37,27 @@ class HomeFragment : BaseFragment(){
     }
 
     override fun init(view: View, savedInstanceState: Bundle?) {
+        mPresenter.attachView(this)
+        mPresenter.requestPublicTimeLine(50,1,0)
+    }
 
+
+    override fun setPublicNews(list: ArrayList<PublicNews>) {
+
+    }
+
+    override fun showLoading() {
+
+    }
+
+    override fun dismissLoading() {
+
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.datachView()
     }
 
 }

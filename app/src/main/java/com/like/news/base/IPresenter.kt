@@ -9,5 +9,7 @@ package com.like.news.base
  * 描述：
 
  */
-interface IPresenter {
+interface IPresenter<in V : IBaseView> {
+    fun attachView(mRootView : V)
+    fun datachView()
 }

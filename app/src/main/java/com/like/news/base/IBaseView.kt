@@ -10,4 +10,6 @@ package com.like.news.base
 
  */
 interface IBaseView {
+    fun showLoading()
+    fun dismissLoading()
 }
